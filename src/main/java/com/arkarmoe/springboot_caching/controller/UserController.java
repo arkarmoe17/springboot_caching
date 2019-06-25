@@ -10,39 +10,34 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/caching")
-@Cacheable("user")
+@RequestMapping("/user")
 public class UserController {
     private Logger logger =  LoggerFactory.getLogger(UserController.class);
 
 
     @CrossOrigin
     @RequestMapping("/")
+    @Cacheable("user_greeting")
     public String helloCaching(){
         logger.info(">>>> Calling greeting function.>>>>>");
         return "Welcome from caching testing project.";
     }
 
     @CrossOrigin
+    @Cacheable("user_name")
     @RequestMapping("/{name}")
-//    @Cacheable("greetings")
     public String helloCaching(@PathVariable (value = "name")String name){
         logger.info(">>>> Calling greeting name function.>>>>>"+name);
         return "Welcome "+name+" from caching testing project.";
     }
 
     @CrossOrigin
-    @RequestMapping("/name/{name}")
-    public String cachingName(@PathVariable (value = "name")String name){
-        logger.info(">>>> Caching name >>>>>"+name);
-        return "Cache name is "+name;
+    @Cacheable("user_id")
+    @RequestMapping("/id/{id}")
+    public String cachingId(@PathVariable (value = "id")String id){
+        logger.info(">>>> Caching user id >>>>>"+id);
+        return "Cache name is "+id;
     }
 
 
-
-    @Scheduled(fixedRate = 60000) //one minute
-    @CacheEvict(value = "user", allEntries = true)
-    public void evictAllCache(){
-        logger.info(">>> Evict  cache >>>");
-    }
 }
